@@ -43,7 +43,6 @@ static NSString *kActionSheetIndexKey= @"actionSheetTargetIndex";
 @property (nonatomic, strong) UIBarButtonItem *commentsBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *miscBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *commentsExitBarButtonItem;
-@property (nonatomic, strong) UIBarButtonItem *hideCommentsBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *toggleTagsBarButtonItem;
 
 @property (weak) UIToolbar *upperToolbar;
@@ -244,13 +243,14 @@ static NSString *kActionSheetIndexKey= @"actionSheetTargetIndex";
     [self.photosDataSource photoPagesController:self
            shouldAllowActivitiesForPhotoAtIndex:index] : YES;
     
-    BOOL miscActionsAllowed = [self.photosDataSource respondsToSelector:@selector(photoPagesController:shouldAllowMiscActionsForPhotoAtIndex:)] ?
-    [self.photosDataSource photoPagesController:self shouldAllowMiscActionsForPhotoAtIndex:index] : YES;
-    
     BOOL commentsAreViewable = [self.photosDataSource respondsToSelector:@selector(photoPagesController:shouldShowCommentsForPhotoAtIndex:)] ?
     [self.photosDataSource photoPagesController:self
               shouldShowCommentsForPhotoAtIndex:index] : YES;
-    
+
+    BOOL miscAreViewable = [self.photosDataSource respondsToSelector:@selector(photoPagesController:shouldShowMiscellaneousForPhotoAtIndex:)] ?
+    [self.photosDataSource photoPagesController:self
+              shouldShowMiscellaneousForPhotoAtIndex:index] : YES;
+
     if([self.photosDataSource photoPagesController:self shouldExpectPhotoAtIndex:index] == NO){
         taggingAllowed = NO;
         activitiesAllowed = NO;
@@ -267,14 +267,14 @@ static NSString *kActionSheetIndexKey= @"actionSheetTargetIndex";
         [mutableLowerItems removeObject:self.activityBarButtonItem];
     }
     
-    if(miscActionsAllowed == NO){
-        [mutableUpperItems removeObject:self.miscBarButtonItem];
-        [mutableLowerItems removeObject:self.miscBarButtonItem];
-    }
-    
     if(commentsAreViewable == NO){
         [mutableUpperItems removeObject:self.commentsBarButtonItem];
         [mutableUpperItems removeObject:self.commentsBarButtonItem];
+    }
+    
+    if(miscAreViewable == NO){
+        [mutableLowerItems removeObject:self.miscBarButtonItem];
+        [mutableUpperItems removeObject:self.miscBarButtonItem];
     }
     
     EBPhotoViewController *photoViewController = [self photoViewControllerWithIndex:index];
@@ -1021,17 +1021,6 @@ static NSString *kActionSheetIndexKey= @"actionSheetTargetIndex";
     return _commentsExitBarButtonItem;
 }
 
-- (UIBarButtonItem *)hideCommentsBarButtonItem
-{
-    if(_hideCommentsBarButtonItem == nil){
-        UIBarButtonItem *hideCommentsButton = [self.photoPagesFactory hideCommentsBarButtonItemForPhotoPagesController:self];
-        [self setHideCommentsBarButtonItem:hideCommentsButton];
-    }
-    
-    return _hideCommentsBarButtonItem;
-}
-
-
 - (UIBarButtonItem *)toggleTagsBarButtonItem
 {
     if(_toggleTagsBarButtonItem == nil){
@@ -1279,7 +1268,7 @@ static NSString *kActionSheetIndexKey= @"actionSheetTargetIndex";
     UIActivityViewController *activityViewController;
     
     if([self.photosDataSource
-        respondsToSelector:@selector(activityViewControllerForImage:withCaption:atIndex:)]){
+        respondsToSelector:@selector(photoPagesController:activityViewControllerForImage:withCaption:atIndex:)]){
         activityViewController =  [self.photosDataSource
                                    photoPagesController:self
                                    activityViewControllerForImage:image

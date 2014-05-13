@@ -392,12 +392,6 @@
     [controller enterBrowsingMode];
 }
 
-- (void)photoPagesController:(EBPhotoPagesController *)controller
-       didSelectCancelButton:(id)sender
-{
-    [controller enterBrowsingMode];
-}
-
 @end
 
 

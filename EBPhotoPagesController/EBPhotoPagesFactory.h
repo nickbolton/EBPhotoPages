@@ -90,7 +90,6 @@
 - (UIBarButtonItem *)miscBarButtonItemForPhotoPagesController:(EBPhotoPagesController *)controller;
 - (UIBarButtonItem *)commentsExitBarButtonItemForPhotoPagesController:(EBPhotoPagesController *)controller
                                                                 count:(NSInteger)numberOfComments;
-- (UIBarButtonItem *)hideCommentsBarButtonItemForPhotoPagesController:(EBPhotoPagesController *)controller;
 - (UIBarButtonItem *)commentsBarButtonItemForPhotoPagesController:(EBPhotoPagesController *)controller
                                                             count:(NSInteger)numberOfComments;
 - (UIBarButtonItem *)toggleTagsBarButtonItemForPhotoPagesController:(EBPhotoPagesController *)controller;

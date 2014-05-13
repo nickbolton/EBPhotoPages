@@ -35,7 +35,6 @@
 @property (nonatomic, readonly) UIBarButtonItem *miscBarButtonItem;
 @property (nonatomic, readonly) UIBarButtonItem *commentsBarButtonItem;
 @property (nonatomic, readonly) UIBarButtonItem *commentsExitBarButtonItem;
-@property (nonatomic, readonly) UIBarButtonItem *hideCommentsBarButtonItem;
 @property (nonatomic, readonly) UIBarButtonItem *toggleTagsBarButtonItem;
 
 
